@@ -1,0 +1,37 @@
+<!doctype html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>{{NOVEL_TITLE}} — NovelNest</title>
+  <link rel="stylesheet" href="../style.css">
+</head>
+<body>
+  <header class="topbar"><h1>NovelNest</h1></header>
+  <main class="container">
+    <nav class="back"><a href="../index.html">⬅ العودة للمكتبة</a></nav>
+    <div class="card">
+      {{COVER_TAG}}
+      <h2>{{NOVEL_TITLE}}</h2>
+      <p class="small">{{NOVEL_SUMMARY}}</p>
+      <h3>الفصول</h3>
+      <ol>
+        {{CHAPTER_LIST}}
+      </ol>
+    </div>
+  </main>
+  <footer class="footer"><small>صنع بواسطة: Sun King</small></footer>
+  <script>
+    (function(){
+      var theme = localStorage.getItem('novelnest_theme_v1') || 'light';
+      var maker = theme === 'dark' ? 'Dark King' : 'Sun King';
+      var footer = document.querySelector('.footer');
+      if (footer) {
+        var sm = footer.querySelector('small');
+        if (sm) sm.textContent = 'صنع بواسطة: ' + maker;
+        else footer.innerHTML = '<small>صنع بواسطة: ' + maker + '</small>';
+      }
+    })();
+  </script>
+</body>
+</html>
