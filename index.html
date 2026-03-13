@@ -1,0 +1,41 @@
+<!doctype html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>NovelNest</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <header class="topbar">
+    <h1 id="site-title">NovelNest</h1>
+    <div class="controls">
+      <button id="theme-toggle" aria-label="تبديل الثيم">☀️</button>
+      <!-- لوحة التحكم مخفية؛ افتح admin.html مباشرة -->
+    </div>
+  </header>
+
+  <main class="container">
+    <section id="hero">
+      <h2>NovelNest</h2>
+      <p>أهلاً بك</p>
+    </section>
+
+    <section id="novel-list" class="grid">
+      <!-- كروت الروايات تُدرج هنا ديناميكيًا -->
+    </section>
+  </main>
+
+  <footer class="footer">
+    <small>صنع بواسطة: Sun King</small>
+  </footer>
+
+  <script src="script.js"></script>
+  <script>
+    document.addEventListener('DOMContentLoaded', async () => {
+      await App.init();
+      App.renderIndex();
+    });
+  </script>
+</body>
+</html>

@@ -1,0 +1,37 @@
+<!doctype html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title id="page-title">Novel — NovelNest</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <header class="topbar">
+    <h1 id="site-title">NovelNest</h1>
+    <div class="controls">
+      <button id="theme-toggle" aria-label="تبديل الثيم">☀️</button>
+    </div>
+  </header>
+
+  <main class="container">
+    <nav class="back">
+      <a href="index.html">⬅ العودة للمكتبة</a>
+    </nav>
+
+    <section id="novel-page"></section>
+  </main>
+
+  <footer class="footer">
+    <small>صنع بواسطة: Sun King</small>
+  </footer>
+
+  <script src="script.js"></script>
+  <script>
+    document.addEventListener('DOMContentLoaded', async () => {
+      await App.init();
+      App.renderNovelPageFromURL();
+    });
+  </script>
+</body>
+</html>

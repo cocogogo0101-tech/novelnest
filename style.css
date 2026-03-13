@@ -1,0 +1,83 @@
+:root{
+  --bg:#ffffff;
+  --text:#111111;
+  --muted:#666666;
+  --card-bg:#f7f7f8;
+  --accent:#6a1b9a;
+  --border:#e0e0e0;
+  --field-bg:#ffffff;
+  --radius:10px;
+}
+[data-theme="dark"]{
+  --bg:#0f1114;
+  --text:#e6e6e6;
+  --muted:#b5b5b5;
+  --card-bg:#141618;
+  --accent:#9b59b6;
+  --border:#222428;
+  --field-bg:#0f1114;
+}
+*{box-sizing:border-box}
+body{
+  margin:0;
+  font-family: "Noto Naskh Arabic", "Tajawal", system-ui, Arial;
+  background:var(--bg);
+  color:var(--text);
+  line-height:1.6;
+}
+.topbar{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  padding:14px;
+  border-bottom:1px solid var(--border);
+  background:linear-gradient(90deg,rgba(0,0,0,0.02),transparent);
+}
+.topbar h1{ margin:0; font-size:1.25rem; color:var(--accent)}
+.controls{ display:flex; gap:8px; align-items:center; }
+.controls a, .controls button { text-decoration:none; padding:8px 10px; border-radius:8px; border:1px solid var(--border); background:var(--card-bg); color:var(--text); cursor:pointer; }
+
+.container{ max-width:1100px; margin:24px auto; padding:0 16px; }
+
+#hero{ text-align:center; margin-bottom:18px; }
+.grid{ display:grid; grid-template-columns: repeat(auto-fit, minmax(220px,1fr)); gap:16px; }
+
+.card{
+  background:var(--card-bg);
+  padding:12px;
+  border-radius:var(--radius);
+  border:1px solid var(--border);
+  display:flex;
+  flex-direction:column;
+  gap:8px;
+}
+.card img{ width:100%; height:220px; object-fit:cover; border-radius:6px; }
+.card h3{ margin:0; font-size:1.05rem; }
+.card p{ margin:0; color:var(--muted); font-size:0.95rem; }
+.card .meta{ display:flex; justify-content:space-between; align-items:center; margin-top:8px; gap:8px; }
+
+.btn { background:var(--accent); color:#fff; padding:8px 12px; border-radius:8px; border: none; cursor:pointer; text-decoration:none; display:inline-block }
+
+.back { margin-bottom:12px; }
+.back a { text-decoration:none; color:var(--accent) }
+
+/* صفحة الفصل */
+.chapter{ background:var(--card-bg); padding:18px; border-radius:var(--radius); border:1px solid var(--border); min-height:300px; }
+.chapter h2{ margin-top:0; }
+.chapter p{ white-space:pre-wrap; font-size:1.05rem }
+
+/* شريط تنقل الفصول */
+.chapter-nav{ display:flex; justify-content:center; gap:16px; margin:20px 0; }
+.chapter-nav button, .chapter-nav a { padding:10px 14px; border-radius:8px; border:1px solid var(--border); background:var(--card-bg); cursor:pointer }
+
+/* Footer */
+.footer{ text-align:center; padding:18px; color:var(--muted); }
+
+/* Admin small */
+.small{ color:var(--muted); font-size:0.95rem }
+
+/* Responsive tweaks */
+@media (max-width:600px){
+  .topbar{ padding:10px }
+  .card img{ height:180px }
+}

@@ -1,0 +1,151 @@
+<!doctype html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>لوحة التحكم — NovelNest</title>
+  <link rel="stylesheet" href="style.css">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/FileSaver.js/2.0.5/FileSaver.min.js"></script>
+  <style>
+    .admin { max-width:1100px; margin:20px auto; padding:16px; border-radius:12px; background:var(--card-bg); }
+    .row { display:flex; gap:10px; align-items:center; margin-bottom:10px; flex-wrap:wrap; }
+    label { min-width:140px; }
+    input[type="text"], textarea { width: 100%; padding:8px; border-radius:6px; border:1px solid var(--border); background:var(--field-bg); color:var(--text); }
+    .novel-item { border:1px dashed var(--border); padding:8px; border-radius:8px; margin-bottom:8px; }
+    .small { font-size:0.9rem; color:var(--muted); }
+  </style>
+</head>
+<body>
+  <header class="topbar">
+    <h1 id="site-title">NovelNest — لوحة التحكم</h1>
+    <div class="controls">
+      <button id="theme-toggle" aria-label="تبديل الثيم">☀️</button>
+      <a href="index.html">عرض المكتبة</a>
+    </div>
+  </header>
+
+  <main class="container admin" id="admin-root">
+    <section id="login-section">
+      <h2>دخول لوحة التحكم</h2>
+      <p>ادخل الرمز السري ثم اضغط دخول.</p>
+      <div class="row">
+        <input id="admin-password" type="text" placeholder="الرمز السري">
+        <button id="admin-login" class="btn">دخول</button>
+      </div>
+      <p class="small">الرمز: <strong>Dark_Sun</strong></p>
+    </section>
+
+    <section id="dashboard" style="display:none;">
+      <h2>لوحة تحكّم الموقع</h2>
+
+      <details open>
+        <summary><strong>إضافة رواية جديدة</strong></summary>
+        <div class="row">
+          <label>عنوان الرواية:</label>
+          <input id="new-novel-title" type="text" placeholder="مثلاً: عالم الظلال">
+        </div>
+        <div class="row">
+          <label>اسم مجلد (لاتيني، بدون مسافات):</label>
+          <input id="new-novel-folder" type="text" placeholder="مثلاً: Shadow-World">
+        </div>
+        <div class="row">
+          <label>ملخص قصير (اختياري):</label>
+          <input id="new-novel-summary" type="text" placeholder="سطر أو سطرين">
+        </div>
+        <div class="row">
+          <label>غلاف (اختياري):</label>
+          <input id="new-novel-cover" type="file" accept="image/*">
+        </div>
+        <div class="row">
+          <button id="create-novel-btn" class="btn">إنشاء الرواية</button>
+          <button id="import-data-btn" class="btn">استيراد data.json</button>
+          <input id="import-file-input" type="file" accept=".json" style="display:none">
+          <button id="clear-data-btn" class="btn">مسح البيانات المحلية</button>
+        </div>
+      </details>
+
+      <hr>
+
+      <details>
+        <summary><strong>إدارة الفصول</strong></summary>
+        <div class="row">
+          <label>اختر رواية:</label>
+          <select id="select-novel-for-chapter"></select>
+        </div>
+        <div class="row">
+          <label>عنوان الفصل:</label>
+          <input id="new-chapter-title" type="text" placeholder="مثلاً: البداية">
+        </div>
+        <div class="row">
+          <label>محتوى الفصل:</label>
+          <textarea id="new-chapter-content" rows="8" placeholder="الصق النص هنا..."></textarea>
+        </div>
+        <div class="row">
+          <button id="create-chapter-btn" class="btn">إضافة فصل</button>
+          <button id="download-chapter-btn" class="btn">تحميل آخر فصل (.txt)</button>
+        </div>
+      </details>
+
+      <hr>
+
+      <section>
+        <h3>توليد الموقع الثابت (ZIP)</h3>
+        <p class="small">يُستخدم القالب الموجود في /templates لتوليد صفحات HTML لكل فصل ورواية.</p>
+        <div class="row">
+          <label>اسم ZIP:</label>
+          <input id="zip-file-name" type="text" value="novelnest-export.zip">
+        </div>
+        <div class="row">
+          <button id="generate-zip-btn" class="btn">توليد ZIP</button>
+          <button id="download-data-btn" class="btn">تحميل data.json</button>
+        </div>
+      </section>
+
+      <hr>
+
+      <section>
+        <h3>قائمة الروايات (محلياً)</h3>
+        <div id="novels-list"></div>
+      </section>
+
+      <hr>
+      <p class="small">ملاحظة: لوحة التحكم تحفظ التغييرات في المتصفح. بعد الانتهاء، اضغط "توليد ZIP" لرفع الملفات على الاستضافة.</p>
+    </section>
+  </main>
+
+  <footer class="footer">
+    <small>صنع بواسطة: Sun King</small>
+  </footer>
+
+  <script src="script.js"></script>
+  <script>
+    document.addEventListener('DOMContentLoaded', async () => {
+      await App.init();
+
+      const PASSWORD = "Dark_Sun";
+      const loginBtn = document.getElementById('admin-login');
+      const pwInput = document.getElementById('admin-password');
+      const loginSection = document.getElementById('login-section');
+      const dashboard = document.getElementById('dashboard');
+
+      function showDashboard(){
+        loginSection.style.display = 'none';
+        dashboard.style.display = 'block';
+        App.renderAdminUI();
+      }
+
+      loginBtn.addEventListener('click', () => {
+        if (pwInput.value === PASSWORD) {
+          showDashboard();
+        } else {
+          alert('الرمز غير صحيح');
+          pwInput.value = '';
+        }
+      });
+
+      pwInput.addEventListener('keydown', (e) => { if (e.key === 'Enter') loginBtn.click(); });
+    });
+  </script>
+</body>
+</html>
